@@ -1,0 +1,23 @@
+<%# locals: (client:, contact:) %>
+<%# The top of the portal's first page: what's waiting for this person's approval, if they can
+    approve for their company. Each opens in the side sheet, where they answer. %>
+<% requests = Approvals::Request.waiting_on(contact).includes(:task).to_a %>
+<% if requests.any? %>
+  <section class="card card--flush approvals-waiting">
+    <header class="card__head card__head--bordered">
+      <h2 class="card__title">Waiting for your approval</h2>
+      <p class="card__hint">We need your yes before we carry on.</p>
+    </header>
+    <ul class="approvals-waiting__list">
+      <% requests.each do |request| %>
+        <%# herb:key request.id %>
+        <li class="approvals-waiting__row">
+          <span class="approvals-waiting__title"><%= portal_task_link_to(request.task) { request.task.title } %></span>
+          <% if request.note %>
+            <span class="approvals-waiting__note"><%= request.note %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

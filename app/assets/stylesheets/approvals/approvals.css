@@ -1,0 +1,30 @@
+/* Linked on every page while the plugin is on (Runwell::Plugins.stylesheet). Runwell's design
+/* tokens only (docs/theming.md), so themes reach it. */
+@layer components {
+  /* Under a task's title: where its ask for approval stands. */
+  .approvals-notice { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin: 0; color: var(--text-muted); font-size: var(--text-meta); }
+
+  /* The task's sidebar card. */
+  .approvals-card__body, .approvals-card__form { display: flex; flex-direction: column; gap: var(--s-3); }
+  .approvals-card__body:empty { display: none; }
+  .approvals-card__history { display: flex; flex-direction: column; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+  .approvals-card__history li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+
+  /* In the portal's task sheet: the ask, tinted in the brand's colour while it waits. */
+  .approvals-portal { display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-3) var(--s-4); border: 1px solid var(--line); border-radius: var(--radius-lg); }
+  .approvals-portal--pending { border-color: transparent; background: var(--brand-tint); }
+  .approvals-portal__title { margin: 0; font-weight: var(--weight-strong); }
+  .approvals-portal__note { margin: 0; overflow-wrap: anywhere; }
+  .approvals-portal__form { display: flex; flex-direction: column; gap: var(--s-2); }
+
+  /* On the portal's first page: what's waiting for this person. */
+  .approvals-waiting { min-width: 0; border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+  .approvals-waiting .card__head { padding: var(--s-4) var(--s-5); }
+  .approvals-waiting__list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+  .approvals-waiting__row { display: flex; flex-direction: column; gap: 2px; padding: var(--s-3) var(--s-5); }
+  .approvals-waiting__row + .approvals-waiting__row { border-top: 1px solid var(--line); }
+  .approvals-waiting__title { font-weight: var(--weight-strong); overflow-wrap: anywhere; }
+  .approvals-waiting__title a { color: inherit; text-decoration: none; }
+  .approvals-waiting__title a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .approvals-waiting__note { color: var(--text-muted); font-size: var(--text-meta); }
+}

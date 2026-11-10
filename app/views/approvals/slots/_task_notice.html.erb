@@ -1,0 +1,16 @@
+<%# locals: (task:) %>
+<%# Under a task's title, on its page and in the side panel: where its latest ask for the client's
+    approval stands. Nothing when it was never asked, or the ask was taken back. %>
+<% request = Approvals::Request.latest_for(task) %>
+<% if request && request.state != "withdrawn" %>
+  <p class="approvals-notice approvals-notice--<%= request.state.dasherize %>" role="note">
+    <%= status_tag request.state_label, highlight: request.state == "approved" %>
+    <span>
+      <% if request.pending? %>
+        <%= task.client&.name %> has been asked<%= " (#{request.note})" if request.note %>, <%= time_ago_in_words(request.created_at) %> ago.
+      <% else %>
+        <%= request.decided_by&.name || "Someone" %>, <%= l request.decided_at.to_date, format: :long %><%= ": #{request.comment}" if request.comment %>
+      <% end %>
+    </span>
+  </p>
+<% end %>

@@ -1,0 +1,9 @@
+<% content_for :preheader, @request.note || "We need your yes to carry on." %>
+<% content_for :reason, "You’re getting this because you can approve for #{@contact.client.name}. You can turn these off in the portal, under your account." %>
+<%= mail_heading "Your approval is needed" %>
+<p>Hi <%= @contact.name.split.first %>, we need your yes on <strong><%= @task.title %></strong> before we carry on.</p>
+<% if @request.note %>
+  <%= mail_quote @request.note %>
+<% end %>
+<p>Open it to approve, or to say what should change.</p>
+<%= mail_button "Review it", @url %>

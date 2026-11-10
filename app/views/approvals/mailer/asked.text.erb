@@ -1,0 +1,10 @@
+<% content_for :reason, "You're getting this because you can approve for #{@contact.client.name}. You can turn these off in the portal, under your account." %>
+Hi <%= @contact.name.split.first %>,
+
+We need your yes on "<%= @task.title %>" before we carry on.
+<% if @request.note %>
+
+> <%= @request.note %>
+<% end %>
+
+Approve it, or say what should change: <%= @url %>

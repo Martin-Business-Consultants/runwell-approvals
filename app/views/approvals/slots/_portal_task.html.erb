@@ -1,0 +1,30 @@
+<%# locals: (task:, contact:) %>
+<%# In a shared task's side sheet in the portal: the team's ask for approval. Someone who can
+    approve for their company gets the two answers (approve, or what should change); anyone else
+    sees that it's waiting. Once answered, who said what. The form leaves the sheet's frame, so the
+    page comes back whole with the answer on the discussion. Staff viewing as them can't answer. %>
+<% request = Approvals::Request.latest_for(task) %>
+<% if request && request.state != "withdrawn" %>
+  <section class="approvals-portal approvals-portal--<%= request.state.dasherize %>" aria-label="Approval">
+    <% if request.pending? %>
+      <p class="approvals-portal__title">Your approval is needed</p>
+      <% if request.note %>
+        <p class="approvals-portal__note"><%= request.note %></p>
+      <% end %>
+      <% if request.decidable_by?(contact) %>
+        <%= form_with url: approvals_portal_decision_path(task), class: "approvals-portal__form", namespace: dom_id(task, :decision), data: { turbo_frame: "_top" } do |form| %>
+          <%= form.text_field :comment, placeholder: "Anything to add, or what should change", maxlength: 500, autocomplete: "off", aria: { label: "Comment" } %>
+          <div class="button-row">
+            <%= tag.button "Approve", type: "submit", name: "decision", value: "approve", class: "btn btn--primary btn--sm", disabled: Current.previewing? %>
+            <%= tag.button "Ask for changes", type: "submit", name: "decision", value: "changes", class: "btn btn--secondary btn--sm", disabled: Current.previewing? %>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="muted small">Waiting for someone who can approve for <%= contact.client.name %>.</p>
+      <% end %>
+    <% else %>
+      <p class="approvals-portal__title"><%= request.state_label %></p>
+      <p class="muted small"><%= request.decided_by_id == contact.id ? "You" : (request.decided_by&.name || "Someone") %>, <%= l request.decided_at.in_time_zone.to_date, format: :long %><%= ": #{request.comment}" if request.comment %></p>
+    <% end %>
+  </section>
+<% end %>
