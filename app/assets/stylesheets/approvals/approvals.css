@@ -1,30 +1,36 @@
-/* Linked on every page while the plugin is on (Runwell::Plugins.stylesheet). Runwell's design
-/* tokens only (docs/theming.md), so themes reach it. */
-@layer components {
-  /* Under a task's title: where its ask for approval stands. */
-  .approvals-notice { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin: 0; color: var(--text-muted); font-size: var(--text-meta); }
+/* tokens: runeui */
+/* Linked on every page while the plugin is on (Runwell::Plugins.stylesheet). runeui's tokens only
+/* (shadcn's names and --ui-*, plus the core's --brand-tint; docs/theming.md), so themes reach it. */
+/* Under a task's title: where its ask for approval stands. */
+.approvals-notice { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 0; color: var(--muted-foreground); font-size: var(--ui-text-xs); }
 
-  /* The task's sidebar card. */
-  .approvals-card__body, .approvals-card__form { display: flex; flex-direction: column; gap: var(--s-3); }
-  .approvals-card__body:empty { display: none; }
-  .approvals-card__history { display: flex; flex-direction: column; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
-  .approvals-card__history li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+/* The task's sidebar card (ui :card): the ask or Take it back, then earlier answers. */
+.approvals-card__title { margin: 0; font: inherit; }
+.approvals-card > [data-slot="card-content"] { display: flex; flex-direction: column; gap: .75rem; min-width: 0; }
+.approvals-card > [data-slot="card-content"]:not(:has(*)) { display: none; }
+.approvals-card__form { display: flex; flex-direction: column; gap: .75rem; }
+.approvals-card__button { display: flex; flex-direction: row; }
+.approvals-card__history { display: flex; flex-direction: column; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.approvals-card__history li { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.approvals-card__meta { color: var(--muted-foreground); font-size: var(--ui-text-xs); }
 
-  /* In the portal's task sheet: the ask, tinted in the brand's colour while it waits. */
-  .approvals-portal { display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-3) var(--s-4); border: 1px solid var(--line); border-radius: var(--radius-lg); }
-  .approvals-portal--pending { border-color: transparent; background: var(--brand-tint); }
-  .approvals-portal__title { margin: 0; font-weight: var(--weight-strong); }
-  .approvals-portal__note { margin: 0; overflow-wrap: anywhere; }
-  .approvals-portal__form { display: flex; flex-direction: column; gap: var(--s-2); }
+/* In the portal's task sheet: the ask, tinted in the brand's colour while it waits. */
+.approvals-portal { display: flex; flex-direction: column; gap: .5rem; padding: .75rem 1rem; border: 1px solid var(--border); border-radius: var(--ui-radius-xl); }
+.approvals-portal--pending { border-color: transparent; background: var(--brand-tint); }
+.approvals-portal__title { margin: 0; font-weight: 500; }
+.approvals-portal__note { margin: 0; overflow-wrap: anywhere; }
+.approvals-portal__meta { margin: 0; color: var(--muted-foreground); font-size: var(--ui-text-xs); }
+.approvals-portal__form { display: flex; flex-direction: column; gap: .5rem; }
+.approvals-portal__buttons { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
 
-  /* On the portal's first page: what's waiting for this person. */
-  .approvals-waiting { min-width: 0; border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
-  .approvals-waiting .card__head { padding: var(--s-4) var(--s-5); }
-  .approvals-waiting__list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
-  .approvals-waiting__row { display: flex; flex-direction: column; gap: 2px; padding: var(--s-3) var(--s-5); }
-  .approvals-waiting__row + .approvals-waiting__row { border-top: 1px solid var(--line); }
-  .approvals-waiting__title { font-weight: var(--weight-strong); overflow-wrap: anywhere; }
-  .approvals-waiting__title a { color: inherit; text-decoration: none; }
-  .approvals-waiting__title a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .approvals-waiting__note { color: var(--text-muted); font-size: var(--text-meta); }
-}
+/* On the portal's first page (ui :card): what's waiting for this person, its rows edge to edge. */
+.approvals-waiting { min-width: 0; border-color: color-mix(in oklab, var(--primary) 40%, var(--border)); }
+.approvals-waiting__heading { margin: 0; font: inherit; }
+.approvals-waiting > [data-slot="card-content"] { padding-inline: 0; }
+.approvals-waiting__list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border); }
+.approvals-waiting__row { display: flex; flex-direction: column; gap: 2px; padding: .75rem 1.5rem 0; }
+.approvals-waiting__row + .approvals-waiting__row { margin-top: .75rem; border-top: 1px solid var(--border); }
+.approvals-waiting__title { font-weight: 500; overflow-wrap: anywhere; }
+.approvals-waiting__title a { color: inherit; text-decoration: none; }
+.approvals-waiting__title a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.approvals-waiting__note { color: var(--muted-foreground); font-size: var(--ui-text-xs); }

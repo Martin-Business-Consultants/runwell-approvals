@@ -29,6 +29,13 @@ nothing of the core's beyond it) and its `AGENTS.md` (the conventions this code 
 
 - An approval changes nothing else: not the task's status, not its work. If that's wanted, it is a
   setting to add, off by default
+- Views draw with runeui, Runwell 6.0's UI kit: `ui :card`, `ui :button` (or `class: "ui-button"`
+  with `data-variant`/`data-size` on `button_to`), and the core's helpers (`status_tag`). No rune_ui
+  helpers or classes
+- CSS starts with `/* tokens: runeui */` and reads runeui's tokens only (shadcn's names:
+  `--muted-foreground`, `--border`, `--primary` for the brand…; runeui's `--ui-*` scale; the core's
+  `--brand-tint`; `docs/theming.md`), never rune_ui's old names (`--text-*`, `--line`, `--s-*`,
+  `--accent` as the brand). Spacing in rems
 - Staff viewing the portal as a contact can't answer (the buttons are off; the core refuses the post)
 - Tables are prefixed `approvals_`, point at core records by id, and migrations only add
 - Release: bump `lib/approvals/version.rb`, commit, tag `vX.Y.Z`, push the tag

@@ -30,7 +30,7 @@ Connected assistants get `ask_for_approval` (confirmed first, since it emails th
 
 ## Installing
 
-In Runwell (5.31 or newer): **Settings › Plugins**, add
+In Runwell (6.0 or newer): **Settings › Plugins**, add
 `Martin-Business-Consultants/runwell-approvals`, then switch it on. Removing it keeps its table
 (`approvals_requests`); the answers already given stay on each task's discussion and history.
 

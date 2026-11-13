@@ -14,17 +14,17 @@
       <% if request.decidable_by?(contact) %>
         <%= form_with url: approvals_portal_decision_path(task), class: "approvals-portal__form", namespace: dom_id(task, :decision), data: { turbo_frame: "_top" } do |form| %>
           <%= form.text_field :comment, placeholder: "Anything to add, or what should change", maxlength: 500, autocomplete: "off", aria: { label: "Comment" } %>
-          <div class="button-row">
-            <%= tag.button "Approve", type: "submit", name: "decision", value: "approve", class: "btn btn--primary btn--sm", disabled: Current.previewing? %>
-            <%= tag.button "Ask for changes", type: "submit", name: "decision", value: "changes", class: "btn btn--secondary btn--sm", disabled: Current.previewing? %>
+          <div class="approvals-portal__buttons">
+            <%= ui :button, type: :submit, name: "decision", value: "approve", size: :sm, disabled: Current.previewing?, content: "Approve" %>
+            <%= ui :button, type: :submit, name: "decision", value: "changes", variant: :outline, size: :sm, disabled: Current.previewing?, content: "Ask for changes" %>
           </div>
         <% end %>
       <% else %>
-        <p class="muted small">Waiting for someone who can approve for <%= contact.client.name %>.</p>
+        <p class="approvals-portal__meta">Waiting for someone who can approve for <%= contact.client.name %>.</p>
       <% end %>
     <% else %>
       <p class="approvals-portal__title"><%= request.state_label %></p>
-      <p class="muted small"><%= request.decided_by_id == contact.id ? "You" : (request.decided_by&.name || "Someone") %>, <%= l request.decided_at.in_time_zone.to_date, format: :long %><%= ": #{request.comment}" if request.comment %></p>
+      <p class="approvals-portal__meta"><%= request.decided_by_id == contact.id ? "You" : (request.decided_by&.name || "Someone") %>, <%= l request.decided_at.in_time_zone.to_date, format: :long %><%= ": #{request.comment}" if request.comment %></p>
     <% end %>
   </section>
 <% end %>

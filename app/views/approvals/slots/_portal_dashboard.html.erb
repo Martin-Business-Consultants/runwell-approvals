@@ -3,11 +3,7 @@
     approve for their company. Each opens in the side sheet, where they answer. %>
 <% requests = Approvals::Request.waiting_on(contact).includes(:task).to_a %>
 <% if requests.any? %>
-  <section class="card card--flush approvals-waiting">
-    <header class="card__head card__head--bordered">
-      <h2 class="card__title">Waiting for your approval</h2>
-      <p class="card__hint">We need your yes before we carry on.</p>
-    </header>
+  <%= ui :card, class: "approvals-waiting", title: tag.h2("Waiting for your approval", class: "approvals-waiting__heading"), description: "We need your yes before we carry on." do %>
     <ul class="approvals-waiting__list">
       <% requests.each do |request| %>
         <%# herb:key request.id %>
@@ -19,5 +15,5 @@
         </li>
       <% end %>
     </ul>
-  </section>
+  <% end %>
 <% end %>

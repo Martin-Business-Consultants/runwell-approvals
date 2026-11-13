@@ -26,7 +26,7 @@ module Approvals
 
     config.to_prepare do
       Runwell::Plugins.register :approvals, name: "Approvals", version: Approvals::VERSION, author: "Martin Business Consultants",
-        enabled_by_default: false, requires: ">= 5.31.0", homepage: "https://github.com/Martin-Business-Consultants/runwell-approvals",
+        enabled_by_default: false, requires: ">= 6.0.0", homepage: "https://github.com/Martin-Business-Consultants/runwell-approvals",
         description: "Ask a client to approve something: on any task shared with them, with a line saying what you need a yes on. Their people who can approve are emailed and decide in the portal, approving or asking for changes, and the answer lands on the task's discussion and in its history."
       Runwell::Plugins.slot :task_aside, :approvals, "approvals/slots/task_aside"
       Runwell::Plugins.slot :task_notice, :approvals, "approvals/slots/task_notice"

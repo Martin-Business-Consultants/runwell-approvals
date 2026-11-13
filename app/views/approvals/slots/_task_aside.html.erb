@@ -6,40 +6,35 @@
   <% requests = task.approvals_requests.newest_first.includes(:decided_by).to_a %>
   <% pending = requests.find(&:pending?) %>
   <% refusal = Approvals::Request.refusal_for(task) unless pending %>
-  <section class="card record-card approvals-card">
-    <header class="card__head">
-      <h2 class="card__title">Approval</h2>
-      <p class="card__hint">
-        <% if pending %>
-          Waiting on <%= Approvals::Request.approvers_for(task).map(&:name).to_sentence.presence || "nobody who can approve" %>, asked <%= time_ago_in_words(pending.created_at) %> ago<%= ": #{pending.note}" if pending.note %>.
-        <% elsif refusal %>
-          <%= refusal %>
-        <% else %>
-          Ask <%= task.client.name %> for a yes. <%= Approvals::Request.approvers_for(task).map(&:name).to_sentence %> can approve, in the portal.
-        <% end %>
-      </p>
-    </header>
-    <div class="card__content approvals-card__body">
-      <% if pending %>
-        <%= button_to "Take it back", approvals_task_request_path(task), method: :delete, class: "btn btn--secondary btn--sm" %>
-      <% elsif refusal.nil? %>
-        <%= form_with url: approvals_task_request_path(task), scope: :request, class: "approvals-card__form", namespace: dom_id(task, :approval) do |form| %>
-          <%= form.text_field :note, placeholder: "What you need a yes on (optional)", maxlength: 500, autocomplete: "off", aria: { label: "What you need a yes on" } %>
-          <div class="button-row"><button type="submit" class="btn btn--secondary btn--sm">Ask for approval</button></div>
-        <% end %>
+  <% decided = requests.reject { it.pending? || it.state == "withdrawn" } %>
+  <% hint = capture do %>
+    <% if pending %>
+      Waiting on <%= Approvals::Request.approvers_for(task).map(&:name).to_sentence.presence || "nobody who can approve" %>, asked <%= time_ago_in_words(pending.created_at) %> ago<%= ": #{pending.note}" if pending.note %>.
+    <% elsif refusal %>
+      <%= refusal %>
+    <% else %>
+      Ask <%= task.client.name %> for a yes. <%= Approvals::Request.approvers_for(task).map(&:name).to_sentence %> can approve, in the portal.
+    <% end %>
+  <% end %>
+  <%= ui :card, class: "approvals-card", title: tag.h2("Approval", class: "approvals-card__title"), description: hint do %>
+    <% if pending %>
+      <%= button_to "Take it back", approvals_task_request_path(task), method: :delete, class: "ui-button", data: { variant: "outline", size: "sm" }, form_class: "approvals-card__button" %>
+    <% elsif refusal.nil? %>
+      <%= form_with url: approvals_task_request_path(task), scope: :request, class: "approvals-card__form", namespace: dom_id(task, :approval) do |form| %>
+        <%= form.text_field :note, placeholder: "What you need a yes on (optional)", maxlength: 500, autocomplete: "off", aria: { label: "What you need a yes on" } %>
+        <div><%= ui :button, type: :submit, variant: :outline, size: :sm, content: "Ask for approval" %></div>
       <% end %>
-      <% decided = requests.reject { it.pending? || it.state == "withdrawn" } %>
-      <% if decided.any? %>
-        <ul class="approvals-card__history">
-          <% decided.first(5).each do |request| %>
-            <%# herb:key request.id %>
-            <li>
-              <%= status_tag request.state_label, highlight: request.state == "approved" %>
-              <span class="muted small"><%= request.decided_by&.name || "Someone" %>, <%= l request.decided_at.to_date, format: :long %><%= ": #{request.comment}" if request.comment %></span>
-            </li>
-          <% end %>
-        </ul>
-      <% end %>
-    </div>
-  </section>
+    <% end %>
+    <% if decided.any? %>
+      <ul class="approvals-card__history">
+        <% decided.first(5).each do |request| %>
+          <%# herb:key request.id %>
+          <li>
+            <%= status_tag request.state_label, highlight: request.state == "approved" %>
+            <span class="approvals-card__meta"><%= request.decided_by&.name || "Someone" %>, <%= l request.decided_at.to_date, format: :long %><%= ": #{request.comment}" if request.comment %></span>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
 <% end %>
